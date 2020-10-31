@@ -49,7 +49,20 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $userToUpdate = User::find($id);
+
+        $userToUpdate->name = $request->name;
+        $userToUpdate->cpf = $request->cpf;
+        $userToUpdate->birthday = $request->birthday;
+        $userToUpdate->email = $request->email;
+        $userToUpdate->phone_number = $request->phone_number;
+        $userToUpdate->address = $request->address;
+        $userToUpdate->city = $request->city;
+        $userToUpdate->state = $request->state;
+
+        $userToUpdate->save();
+
+        return $userToUpdate;
     }
 
     /**
