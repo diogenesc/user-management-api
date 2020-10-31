@@ -8,10 +8,13 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Validator;
 
+use App\Exceptions\UserNotFoundException;
+use App\Exceptions\BadRequestException;
+
 class UserController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of users.
      *
      * @return \Illuminate\Http\Response
      */
@@ -21,7 +24,7 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created user in database.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -29,8 +32,9 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validator= Validator::make($request->all(), $this->rules());
+
         if($validator->fails())
-            return response()->json(['message' => "Some fields are invalid or missing"])->setStatusCode(500);
+            throw new BadRequestException();
 
         $userToStore = new User;
 
@@ -49,7 +53,7 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified user in database.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -59,8 +63,9 @@ class UserController extends Controller
     {
         try {
             $validator= Validator::make($request->all(), $this->rules());
+
             if($validator->fails())
-                return response()->json(['message' => "Some fields are invalid or missing"])->setStatusCode(500);
+                throw new BadRequestException();
 
             $userToUpdate = User::findOrFail($id);
 
@@ -77,12 +82,12 @@ class UserController extends Controller
 
             return $userToUpdate;
         } catch (ModelNotFoundException $e) {
-            return response()->json(['message' => "User not found"])->setStatusCode(404);
+            throw new UserNotFoundException();
         }
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the user from database.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -96,7 +101,7 @@ class UserController extends Controller
 
             return ["message" => "User deleted"];
         } catch (ModelNotFoundException $e) {
-            return response()->json(['message' => "User not found"])->setStatusCode(404);
+            throw new UserNotFoundException();
         }
     }
 

@@ -4,6 +4,9 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
+use App\Exceptions\UserNotFoundException;
+use App\Exceptions\BadRequestException;
+
 class Handler extends ExceptionHandler
 {
     /**
@@ -32,6 +35,12 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        //
+        $this->renderable(function (UserNotFoundException $e, $request) {
+            return response()->json(['message' => 'User not found'])->setStatusCode(404);
+        });
+
+        $this->renderable(function (BadRequestException $e, $request) {
+            return response()->json(['message' => "Some fields are invalid or missing"])->setStatusCode(400);
+        });
     }
 }
