@@ -20,7 +20,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        return response()->json(User::all());
+        $allUsers = User::all();
+
+        return response()->json($allUsers)->header("X-Total-Count", $allUsers->count());
     }
 
     /**
