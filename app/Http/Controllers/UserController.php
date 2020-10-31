@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -27,6 +28,10 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $validator= Validator::make($request->all(), $this->rules());
+        if($validator->fails())
+            return response()->json(['message' => "Some fields are invalid or missing"])->setStatusCode(500);
+
         $userToStore = new User;
 
         $userToStore->name = $request->name;
@@ -53,6 +58,10 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            $validator= Validator::make($request->all(), $this->rules());
+            if($validator->fails())
+                return response()->json(['message' => "Some fields are invalid or missing"])->setStatusCode(500);
+
             $userToUpdate = User::findOrFail($id);
 
             $userToUpdate->name = $request->name;
@@ -89,5 +98,18 @@ class UserController extends Controller
         } catch (ModelNotFoundException $e) {
             return response()->json(['message' => "User not found"])->setStatusCode(404);
         }
+    }
+
+    public function rules() {
+        return [
+            'name' => ['required', 'string', 'max:255'],
+            'cpf' => ['required', 'string', 'max:255'],
+            'birthday' => ['required', 'date'],
+            'email' => ['required', 'string', 'max:255'],
+            'phone_number' => ['required', 'string', 'max:255'],
+            'address' => ['required', 'string', 'max:255'],
+            'city' => ['required', 'string', 'max:255'],
+            'state' => ['required', 'string', 'max:255'],
+        ];
     }
 }
