@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UserController extends Controller
 {
@@ -49,20 +52,24 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $userToUpdate = User::find($id);
+        try {
+            $userToUpdate = User::findOrFail($id);
 
-        $userToUpdate->name = $request->name;
-        $userToUpdate->cpf = $request->cpf;
-        $userToUpdate->birthday = $request->birthday;
-        $userToUpdate->email = $request->email;
-        $userToUpdate->phone_number = $request->phone_number;
-        $userToUpdate->address = $request->address;
-        $userToUpdate->city = $request->city;
-        $userToUpdate->state = $request->state;
+            $userToUpdate->name = $request->name;
+            $userToUpdate->cpf = $request->cpf;
+            $userToUpdate->birthday = $request->birthday;
+            $userToUpdate->email = $request->email;
+            $userToUpdate->phone_number = $request->phone_number;
+            $userToUpdate->address = $request->address;
+            $userToUpdate->city = $request->city;
+            $userToUpdate->state = $request->state;
 
-        $userToUpdate->save();
+            $userToUpdate->save();
 
-        return $userToUpdate;
+            return $userToUpdate;
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['message' => "User not found"])->setStatusCode(404);
+        }
     }
 
     /**
@@ -73,10 +80,14 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $userToDelete = User::findOrFail($id);
+        try {
+            $userToDelete = User::findOrFail($id);
 
-        $userToDelete->delete();
+            $userToDelete->delete();
 
-        return ["message" => "User Deleted"];
+            return ["message" => "User deleted"];
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['message' => "User not found"])->setStatusCode(404);
+        }
     }
 }
