@@ -26,6 +26,22 @@ class UserController extends Controller
     }
 
     /**
+     * Display a user.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        try {
+            $allUsers = User::findOrFail($id);
+
+            return response()->json($allUsers)->header("X-Total-Count", $allUsers->count());
+        } catch (ModelNotFoundException $e) {
+            throw new UserNotFoundException();
+        }
+    }
+    
+    /**
      * Store a newly created user in database.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -107,6 +123,7 @@ class UserController extends Controller
         }
     }
 
+    // Rules used for request validation
     public function rules() {
         return [
             'name' => ['required', 'string', 'max:255'],

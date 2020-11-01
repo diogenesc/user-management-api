@@ -16,5 +16,5 @@ use App\Http\Controllers\UserController;
 */
 
 Route::resource('users', UserController::class)->only([
-    'store', 'index', 'update', 'destroy'
+    'store', 'index', 'show', 'update', 'destroy'
 ]);
