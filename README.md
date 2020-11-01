@@ -1,61 +1,96 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Sistema de Gerenciamento de usuários
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Sobre o sistema
 
-## About Laravel
+Esta API REST oferece 5 operações sobre os usuários, sendo elas:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+-   Listagem de usuários
+-   Exibir um usuário
+-   Cadastrar usuário
+-   Editar usuário
+-   Deletar usuário
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Informações do usuário:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+-   Nome
+-   CPF
+-   Data Nascimento
+-   Email
+-   Tefone
+-   Logradouro
+-   Cidade
+-   Estado
 
-## Learning Laravel
+## Tecnologia
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+-   Laravel
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Configuração e instalação
 
-## Laravel Sponsors
+É necessário ter instalado o PHP, Composer, MySQL e um servidor para a aplicação.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+1. Clone este repositório
 
-### Premium Partners
+    ```
+    git clone https://github.com/diogenesc/user-management-api.git
+    ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[OP.GG](https://op.gg)**
+2. Entre na pasta e instale as dependências
 
-## Contributing
+    ```
+    cd user-management-api
+    composer install
+    ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3. Copie o .env.example e configure o necessário
 
-## Code of Conduct
+    ```
+    cp .env.example .env
+    ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+4. Execute os scripts de configuração e migração do banco de dados
 
-## Security Vulnerabilities
+    ```bash
+    php artisan key:generate
+    php artisan migrate
+    ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Endpoints
 
-## License
+Você deve configurar seu servidor e para a pasta _public_, ou precisará do prefixo _public/_ em cada endpoint. Exemplo: public/api/users
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+| Método    | URI              | Descrição                            |
+| --------- | ---------------- | ------------------------------------ |
+| GET       | `api/users`      | Returna a lista de todos os usuários |
+| GET       | `api/users/{id}` | Retorna um usuário                   |
+| POST      | `api/users`      | Cadastra um usuário                  |
+| PUT/PATCH | `api/users/{id}` | Edita um usuário                     |
+| DELETE    | `api/users/{id}` | Remove um usuário                    |
+
+### Exemplo de Request para Cadastro e Edição
+
+**Request**:
+
+```json
+{
+    "name": "Nome completo",
+    "cpf": "000.000.000-00",
+    "birthday": "2020-01-01",
+    "email": "usuario@usuario.com",
+    "phone_number": "99000000000",
+    "address": "Rua Exemplo, SN",
+    "city": "Vitória",
+    "state": "Espírito Santo"
+}
+```
+
+| Atributo     | Tipo   |
+| ------------ | ------ |
+| name         | string |
+| cpf          | string |
+| birthday     | date   |
+| email        | string |
+| phone_number | string |
+| address      | string |
+| city         | string |
+| state        | string |
