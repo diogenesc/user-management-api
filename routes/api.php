@@ -15,6 +15,7 @@ use App\Http\Controllers\UserController;
 |
 */
 
+// Resource route for UserController
 Route::resource('users', UserController::class)->only([
     'store', 'index', 'show', 'update', 'destroy'
 ]);
