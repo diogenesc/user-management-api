@@ -10,18 +10,9 @@ class User extends Model
     use HasFactory;
 
     /**
-     * The attributes that are mass assignable.
+     * All attributes are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [
-        'name',
-        'cpf',
-        'birthday',
-        'email',
-        'phone_number',
-        'address',
-        'city',
-        'state',
-    ];
+    protected $guarded = [];
 }
