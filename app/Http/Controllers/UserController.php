@@ -33,9 +33,9 @@ class UserController extends Controller
     public function show($id)
     {
         try {
-            $allUsers = User::findOrFail($id);
+            $user = User::findOrFail($id);
 
-            return response()->json($allUsers)->header("X-Total-Count", $allUsers->count());
+            return response()->json($user);
         } catch (ModelNotFoundException $e) {
             throw new UserNotFoundException();
         }
@@ -54,20 +54,20 @@ class UserController extends Controller
         if($validator->fails())
             throw new BadRequestException();
 
-        $userToStore = new User;
+        $userToSave = new User;
 
-        $userToStore->name = $request->name;
-        $userToStore->cpf = $request->cpf;
-        $userToStore->birthday = $request->birthday;
-        $userToStore->email = $request->email;
-        $userToStore->phone_number = $request->phone_number;
-        $userToStore->address = $request->address;
-        $userToStore->city = $request->city;
-        $userToStore->state = $request->state;
+        $userToSave->name = $request->name;
+        $userToSave->cpf = $request->cpf;
+        $userToSave->birthday = $request->birthday;
+        $userToSave->email = $request->email;
+        $userToSave->phone_number = $request->phone_number;
+        $userToSave->address = $request->address;
+        $userToSave->city = $request->city;
+        $userToSave->state = $request->state;
 
-        $userToStore->save();
+        $userToSave->save();
 
-        return response()->json($userToStore);
+        return response()->json($userToSave);
     }
 
     /**
