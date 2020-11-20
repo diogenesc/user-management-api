@@ -10,9 +10,9 @@ class User extends Model
     use HasFactory;
 
     /**
-     * All attributes are mass assignable.
+     * No attributes are mass assignable.
      *
      * @var array
      */
-    protected $guarded = [];
+    protected $fillable = [];
 }
